@@ -39,3 +39,24 @@ select @taux_livraison into p_resultat;
 end |
 DELIMITER ;
 
+-- PROGRAMMATION PERMETTANT L'INSCRIPTION DE NOS CLIENTS --
+
+-- Création de la table Erreur --
+CREATE TABLE Erreur (
+    id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    erreur varchar(255) UNIQUE);
+
+-- Insertion de l'erreur qui nous intéresse
+INSERT INTO Erreur (erreur) VALUES ('Désolé! Nous ne pouvons pas vous servir dans cette ville.');
+
+-- Création du trigger avec génération d'une erreur si code postal endehors de ceux autorisés --
+DELIMITER |
+CREATE TRIGGER before_insert_client BEFORE INSERT
+ON Client FOR EACH ROW
+BEGIN
+    IF NEW.postal_code not In('44325','44200','44100','44000','44036','44300')        
+      THEN
+        INSERT INTO Erreur (erreur) VALUES ('Désolé! Nous ne pouvons pas vous servir dans cette ville.');
+    END IF;
+END |
+DELIMITER ;
