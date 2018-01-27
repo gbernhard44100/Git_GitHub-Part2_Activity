@@ -16,7 +16,7 @@ function listPosts()
 function post()
 {
     $postManager = new PostManager();
-    $commentManager = new CommentManager();
+    $commentManager = new CommentsManager();
 
     $post = $postManager->getPost($_GET['id']);
     $comments = $commentManager->getComments($_GET['id']);
